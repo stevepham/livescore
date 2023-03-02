@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/team"
+        android:title="@string/team"
+        android:enabled="true"
+        android:icon="@drawable/ic_team"/>
+
+    <item
+        android:id="@+id/match"
+        android:title="@string/match"
+        android:enabled="true"
+        android:icon="@drawable/ic_100tb"/>
+
+    <item
+        android:id="@+id/watching"
+        android:title="@string/watching"
+        android:enabled="true"
+        android:icon="@drawable/ic_favorite"/>
+</menu>

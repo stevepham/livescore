@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Livescore</string>
+    <string name="prev_match">Previous matches</string>
+    <string name="upcoming_match">Upcoming matches</string>
+    <string name="vs">VS</string>
+    <string name="team">Team</string>
+    <string name="match">Match</string>
+
+    <string name="win_team">%1$s (W)</string>
+    <string name="watching_matches">Watching matches</string>
+    <string name="watching">Watching</string>
+    <string name="match_detail">Match Detail</string>
+    <string name="err_no_network">Your network has problem. Please try again!!!</string>
+    <string name="err_unknown">Something unexpected occured!!!</string>
+
+    <string name="match_info">Match info:\n%1$s</string>
+    <string name="add_match_to_favorite">Add match to watching list</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="remove_match_from_watching">Remove watch from watching</string>
+    <string name="create_notify_match">Create notify for this match</string>
+    <string name="match_coming">Match coming</string>
+    <string name="you_have_no_watching_match">You have no watching match</string>
+</resources>

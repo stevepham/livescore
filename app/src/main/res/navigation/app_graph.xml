@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_graph"
+    app:startDestination="@id/team">
+
+    <action
+        android:id="@+id/move_to_match_detail"
+        app:destination="@id/match_detail"/>
+
+    <fragment
+        android:id="@+id/team"
+        android:name="com.ht117.livescore.ui.screen.team.TeamFragment"
+        tools:layout="@layout/fragment_team">
+
+        <action
+            android:id="@+id/team_to_detail"
+            app:destination="@id/team_detail"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/team_detail"
+        android:name="com.ht117.livescore.ui.screen.team.detail.TeamDetailFragment"
+        tools:layout="@layout/fragment_team_detail"/>
+
+
+    <fragment
+        android:id="@+id/match"
+        android:name="com.ht117.livescore.ui.screen.match.MatchFragment"
+        tools:layout="@layout/fragment_team"/>
+
+
+    <fragment
+        android:id="@+id/match_detail"
+        android:name="com.ht117.livescore.ui.screen.match.detail.MatchDetailFragment"
+        tools:layout="@layout/fragment_match_detail"/>
+
+    <fragment
+        android:id="@+id/watching"
+        android:name="com.ht117.livescore.ui.screen.watching.WatchingMatchFragment"
+        tools:layout="@layout/fragment_watching_match"/>
+
+</navigation>

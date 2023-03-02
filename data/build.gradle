@@ -1,0 +1,55 @@
+import com.ht117.config.Deps
+
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.20'
+    id 'kotlin-parcelize'
+}
+
+android {
+    namespace 'com.ht117.data'
+    compileSdk Deps.App.compileSdk
+
+    defaultConfig {
+        minSdk Deps.App.minSdk
+        targetSdk Deps.App.targetSdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+
+    api Deps.AndroidX.core
+    api Deps.Koin.core
+    api Deps.Koin.android
+    api Deps.Common.coroutine
+    implementation Deps.AndroidX.roomRuntime
+    kapt Deps.AndroidX.roomCompiler
+    implementation Deps.AndroidX.roomKtx
+
+    implementation Deps.Networks.ktorCore
+    implementation Deps.Networks.ktorOkhttp
+    implementation Deps.Networks.serialization
+    implementation Deps.Networks.ktorContent
+    implementation Deps.Networks.ktorJson
+
+    testImplementation Deps.Test.jUnit
+    androidTestImplementation Deps.Test.extJUnit
+    androidTestImplementation Deps.Test.espresso
+}
