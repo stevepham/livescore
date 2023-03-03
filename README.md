@@ -14,14 +14,11 @@ List of features that build in this app
 
 * Show all participating team
 * Show all previous and upcoming matches
-* View team detail with previous matches and upcoming matches of that team
+* View team detail with previous matches and upcoming matches of that team (indicate watching matches)
 * View match detail with highlight
 * Add match to watchlist
 * Manage watchlist matches (remove/add)
 * Create notification for watching match
-
--> Improve things will do
-* Show watching match indicator in team detail screen also all match screen.
 
 ## Architecture
 
