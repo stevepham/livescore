@@ -39,6 +39,7 @@ class MatchDetailAdapter(
                     item.away
                 }
                 tvDate.text = item.date.formatDate()
+                tvWatched.isVisible = item.isFavorite
 
                 root.setOnClickListener {
                     listener?.invoke(item)

@@ -39,4 +39,4 @@ List of features that build in this app
 * ExoPlayer
 
 ## Demo
-[Demo gift](asset/demo.gif)
+![Demo gift](asset/demo.gif)

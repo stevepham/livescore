@@ -21,4 +21,5 @@
     <string name="create_notify_match">Create notify for this match</string>
     <string name="match_coming">Match coming</string>
     <string name="you_have_no_watching_match">You have no watching match</string>
+    <string name="watched">Watched</string>
 </resources>

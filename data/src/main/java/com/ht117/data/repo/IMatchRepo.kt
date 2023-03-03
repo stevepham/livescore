@@ -6,7 +6,9 @@ import com.ht117.data.response.MatchResponseInfo
 import com.ht117.data.source.local.MatchLocal
 import com.ht117.data.source.remote.MatchRemote
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.zip
 
 interface IMatchRepo {
     fun getAllMatches(): Flow<State<MatchResponseInfo>>
@@ -24,6 +26,16 @@ class MatchRepoImpl(private val matchRemote: MatchRemote,
                     private val matchLocal: MatchLocal): IMatchRepo {
 
     override fun getAllMatches() = matchRemote.getAllMatches()
+        .combine(matchLocal.getAllMatches()) { allMatches, favoritesMatchs ->
+            if (allMatches is State.Result) {
+                val upComming = allMatches.data.upcoming.map {
+                    it.copy(isFavorite = it in favoritesMatchs)
+                }
+                State.Result(MatchResponseInfo(allMatches.data.previous, upComming))
+            } else {
+                allMatches
+            }
+        }
 
     override fun getMatchesOfTeam(teamId: String) = matchRemote.getMatchesOfTeam(teamId)
 

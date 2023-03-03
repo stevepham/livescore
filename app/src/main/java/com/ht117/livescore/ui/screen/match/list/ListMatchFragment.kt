@@ -31,16 +31,18 @@ class ListMatchFragment: BaseFragment(R.layout.fragment_list_match) {
                 navigate(R.id.move_to_match_detail, bundle)
             }
         }, extraListener = {
-            val builder = AlertDialog.Builder(requireContext())
-            val dialog = builder.setMessage(R.string.add_match_to_favorite)
-                .setPositiveButton(R.string.ok) { dialog, _ ->
-                    viewModel.addToFavorite(it)
-                    dialog.dismiss()
-                }
-                .setNegativeButton(R.string.cancel) { dialog, _ ->
-                    dialog.dismiss()
-                }.create()
-            dialog.show()
+            if (!it.isFavorite) {
+                val builder = AlertDialog.Builder(requireContext())
+                val dialog = builder.setMessage(R.string.add_match_to_favorite)
+                    .setPositiveButton(R.string.ok) { dialog, _ ->
+                        viewModel.addToFavorite(it)
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton(R.string.cancel) { dialog, _ ->
+                        dialog.dismiss()
+                    }.create()
+                dialog.show()
+            }
             true
         })
 
