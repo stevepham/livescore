@@ -1,21 +1,20 @@
 package com.ht117.data.repo
 
 import com.ht117.data.model.Match
-import com.ht117.data.model.State
+import com.ht117.data.model.UiState
 import com.ht117.data.response.MatchResponseInfo
 import com.ht117.data.source.local.MatchLocal
 import com.ht117.data.source.remote.MatchRemote
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.transform
-import kotlinx.coroutines.flow.zip
 
 interface IMatchRepo {
-    fun getAllMatches(): Flow<State<MatchResponseInfo>>
+    fun getAllMatches(): Flow<UiState<MatchResponseInfo>>
 
-    fun getMatchesOfTeam(teamId: String): Flow<State<MatchResponseInfo>>
+    fun getMatchesOfTeam(teamId: String): Flow<UiState<MatchResponseInfo>>
 
-    fun getFavoritesMatches(): Flow<State<List<Match>>>
+    fun getFavoritesMatches(): Flow<UiState<List<Match>>>
 
     fun addFavoriteMatch(match: Match)
 
@@ -27,11 +26,11 @@ class MatchRepoImpl(private val matchRemote: MatchRemote,
 
     override fun getAllMatches() = matchRemote.getAllMatches()
         .combine(matchLocal.getAllMatches()) { allMatches, favoritesMatches ->
-            if (allMatches is State.Result) {
+            if (allMatches is UiState.Result) {
                 val upComming = allMatches.data.upcoming.map {
                     it.copy(isFavorite = it in favoritesMatches)
                 }
-                State.Result(MatchResponseInfo(allMatches.data.previous, upComming))
+                UiState.Result(MatchResponseInfo(allMatches.data.previous, upComming))
             } else {
                 allMatches
             }
@@ -39,9 +38,9 @@ class MatchRepoImpl(private val matchRemote: MatchRemote,
 
     override fun getMatchesOfTeam(teamId: String) = matchRemote.getMatchesOfTeam(teamId)
 
-    override fun getFavoritesMatches(): Flow<State<List<Match>>> {
+    override fun getFavoritesMatches(): Flow<UiState<List<Match>>> {
         return matchLocal.getAllMatches().transform {
-            emit(State.Result(it))
+            emit(UiState.Result(it))
         }
     }
 

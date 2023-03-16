@@ -31,9 +31,20 @@ object Deps {
         const val exoStreaming = "com.google.android.exoplayer:exoplayer-smoothstreaming:2.18.3"
     }
 
+    object Compose {
+        const val bom = "androidx.compose:compose-bom:2023.01.00"
+        const val material = "androidx.compose.material:material:1.3.1"
+        const val uiTooling = "androidx.compose.ui:ui-tooling:1.3.3"
+        const val uiPreview = "androidx.compose.ui:ui-tooling-preview:1.3.3"
+        const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
+        const val activity = "androidx.activity:activity-compose:1.6.1"
+        const val navigation = "androidx.navigation:navigation-compose:2.5.3"
+    }
+
     object Koin {
         const val core = "io.insert-koin:koin-core:3.2.2"
         const val android = "io.insert-koin:koin-android:3.2.2"
+        const val compose = "io.insert-koin:koin-androidx-compose:3.4.2"
     }
 
     object Networks {
@@ -44,6 +55,7 @@ object Deps {
         const val ktorContent = "io.ktor:ktor-client-content-negotiation:2.1.3"
         const val ktorJson = "io.ktor:ktor-serialization-kotlinx-json:2.1.3"
         const val coil = "io.coil-kt:coil:2.2.2"
+        const val coilCompose = "io.coil-kt:coil-compose:2.2.2"
     }
 
     object Test {

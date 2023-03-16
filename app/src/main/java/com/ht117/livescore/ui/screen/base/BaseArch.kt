@@ -2,17 +2,16 @@ package com.ht117.livescore.ui.screen.base
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.ht117.data.AppErr
-import com.ht117.data.model.State
+import com.ht117.data.model.UiState
 import com.ht117.livescore.R
 
 interface IView<T> {
-    fun render(state: State<T>)
+    fun render(uiState: UiState<T>)
 }
 
 abstract class BaseFragment(@LayoutRes layoutId: Int): Fragment(layoutId) {

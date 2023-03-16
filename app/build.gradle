@@ -27,6 +27,11 @@ android {
     }
     buildFeatures {
         viewBinding true
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.2"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -45,6 +50,20 @@ dependencies {
     implementation Deps.Networks.coil
     implementation Deps.Common.exoCore
     implementation Deps.Common.exoUI
+
+    implementation platform(Deps.Compose.bom)
+    androidTestImplementation Deps.Compose.bom
+
+    implementation Deps.Compose.material
+    implementation Deps.Compose.uiPreview
+    implementation Deps.Compose.uiTooling
+    implementation Deps.Compose.viewModel
+    implementation Deps.Compose.activity
+    implementation Deps.Compose.navigation
+    implementation Deps.Koin.compose
+    implementation Deps.Networks.coilCompose
+
+
 
     implementation(project(":data"))
 

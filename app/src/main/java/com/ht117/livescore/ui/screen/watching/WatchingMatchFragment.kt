@@ -5,15 +5,13 @@ import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.ht117.data.model.Match
-import com.ht117.data.model.State
+import com.ht117.data.model.UiState
 import com.ht117.livescore.R
 import com.ht117.livescore.adapter.MatchDetailAdapter
 import com.ht117.livescore.databinding.FragmentWatchingMatchBinding
@@ -56,7 +54,7 @@ class WatchingMatchFragment: BaseFragment(R.layout.fragment_watching_match), IVi
                             it.date.getTime(),
                             pendingIntent
                         )
-                    } catch (exp: SecurityException) {
+                    } catch (_: SecurityException) {
                     }
                     dialog.dismiss()
                 }
@@ -86,40 +84,41 @@ class WatchingMatchFragment: BaseFragment(R.layout.fragment_watching_match), IVi
         super.handleData()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.distinctUntilChanged().collectLatest {
+                viewModel.uiState.distinctUntilChanged().collectLatest {
                     render(it)
                 }
             }
         }
     }
 
-    override fun render(state: State<List<Match>>) {
+    override fun render(uiState: UiState<List<Match>>) {
         binding.run {
-            when (state) {
-                State.Loading -> {
+            when (uiState) {
+                UiState.Loading -> {
                     rvMatches.isGone = true
                     loader.isVisible = true
                     tvMessage.isGone = true
                 }
-                is State.Failed -> {
+                is UiState.Failed -> {
                     rvMatches.isGone = true
                     loader.isVisible = true
                     tvMessage.isVisible = true
-                    tvMessage.text = processError(state.err)
+                    tvMessage.text = processError(uiState.err)
                 }
-                is State.Result -> {
+                is UiState.Result -> {
                     rvMatches.isVisible = true
                     loader.isGone = true
-                    if (state.data.isNullOrEmpty()) {
+                    if (uiState.data.isNullOrEmpty()) {
                         rvMatches.isGone = true
                         tvMessage.isVisible = true
                         tvMessage.text = getString(R.string.you_have_no_watching_match)
                     } else {
                         tvMessage.isGone = true
                         rvMatches.isVisible = true
-                        adapter?.dispatchNewItems(state.data)
+                        adapter?.dispatchNewItems(uiState.data)
                     }
                 }
+                else -> {}
             }
         }
     }

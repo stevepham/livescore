@@ -26,8 +26,8 @@ data class Match(
     val isFavorite: Boolean = false
 ): Parcelable
 
-sealed class State<out T> {
-    object Loading: State<Nothing>()
-    data class Result<T>(val data: T): State<T>()
-    data class Failed(val err: AppErr) : State<Nothing>()
+sealed class UiState<out T> {
+    object Loading: UiState<Nothing>()
+    data class Result<T>(val data: T): UiState<T>()
+    data class Failed(val err: AppErr) : UiState<Nothing>()
 }

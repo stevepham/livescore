@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.tabs.TabLayoutMediator
-import com.ht117.data.model.State
+import com.ht117.data.model.UiState
 import com.ht117.data.response.MatchResponseInfo
 import com.ht117.livescore.R
 import com.ht117.livescore.adapter.MatchAdapter
@@ -28,30 +28,30 @@ class MatchFragment: BaseFragment(R.layout.fragment_match), IView<MatchResponseI
         super.handleData()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.distinctUntilChanged().collect {
+                viewModel.uiState.distinctUntilChanged().collect {
                     render(it)
                 }
             }
         }
     }
 
-    override fun render(state: State<MatchResponseInfo>) {
+    override fun render(uiState: UiState<MatchResponseInfo>) {
         binding.run {
-            when (state) {
-                State.Loading -> {
+            when (uiState) {
+                UiState.Loading -> {
                     tabHeader.isGone = true
                     pager.isGone = true
                     loader.isVisible = true
                 }
-                is State.Failed -> {
+                is UiState.Failed -> {
                     loader.isGone = true
                 }
-                is State.Result -> {
+                is UiState.Result -> {
                     tabHeader.isVisible = true
                     pager.isVisible = true
                     loader.isGone = true
 
-                    adapter = MatchAdapter(this@MatchFragment, state.data)
+                    adapter = MatchAdapter(this@MatchFragment, uiState.data)
                     pager.adapter = adapter
                     TabLayoutMediator(tabHeader, pager) { tab, pos ->
                         tab.text = if (pos == 0) {
@@ -61,6 +61,7 @@ class MatchFragment: BaseFragment(R.layout.fragment_match), IView<MatchResponseI
                         }
                     }.attach()
                 }
+                else -> {}
             }
         }
     }

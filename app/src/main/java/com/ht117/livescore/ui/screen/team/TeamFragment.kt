@@ -6,7 +6,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.ht117.data.model.State
+import com.ht117.data.model.UiState
 import com.ht117.data.model.Team
 import com.ht117.livescore.R
 import com.ht117.livescore.adapter.TeamAdapter
@@ -40,30 +40,31 @@ class TeamFragment: BaseFragment(R.layout.fragment_team), IView<List<Team>> {
         super.handleData()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.distinctUntilChanged().collectLatest {
+                viewModel.uiState.distinctUntilChanged().collectLatest {
                     render(it)
                 }
             }
         }
     }
 
-    override fun render(state: State<List<Team>>) {
+    override fun render(uiState: UiState<List<Team>>) {
         binding.run {
-            when (state) {
-                State.Loading -> {
+            when (uiState) {
+                UiState.Loading -> {
                     rvTeam.isGone = true
                     loader.isVisible = true
                 }
-                is State.Failed -> {
+                is UiState.Failed -> {
                     loader.isGone = true
                     tvError.isVisible = true
-                    tvError.text = processError(state.err)
+                    tvError.text = processError(uiState.err)
                 }
-                is State.Result -> {
+                is UiState.Result -> {
                     rvTeam.isVisible = true
                     loader.isGone = true
-                    adapter?.dispatchNewItems(state.data)
+                    adapter?.dispatchNewItems(uiState.data)
                 }
+                else -> {}
             }
         }
     }
