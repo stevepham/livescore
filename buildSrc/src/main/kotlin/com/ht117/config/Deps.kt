@@ -53,8 +53,6 @@ object Deps {
         const val mockk = "io.mockk:mockk-android:1.13.4"
         const val mockAgent = "io.mockk:mockk-agent:1.13.4"
         const val turbine = "app.cash.turbine:turbine:0.12.1"
-
-//        const val ktor = "io.ktor:ktor-client-mock"
         const val coroutine = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
     }
 }

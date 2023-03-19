@@ -52,8 +52,7 @@ dependencies {
     androidTestImplementation Deps.Test.extJUnit
     androidTestImplementation Deps.Test.espresso
 
-    testImplementation Deps.Test.mockk //"io.mockk:mockk-android:1.13.4"
-    testImplementation Deps.Test.mockAgent //"io.mockk:mockk-agent:1.13.4"
+    testImplementation Deps.Test.mockk
+    testImplementation Deps.Test.mockAgent
     testImplementation Deps.Test.coroutine
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test"
 }

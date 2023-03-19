@@ -19,9 +19,7 @@ List of features that build in this app
 * Add match to watchlist
 * Manage watchlist matches (remove/add)
 * Create notification for watching match
-
--> Improve things will do
-* Show watching match indicator in team detail screen also all match screen.
+* Unit test
 
 ## Architecture
 
@@ -29,14 +27,15 @@ List of features that build in this app
 * UI layer -> Data layer[Repository -> [RemoteSource, LocalSource]]
 
 ## Tech-Stack
-* Kotlin Coroutine, Flow 
-* Jetpack Navigation
-* Jetpack Room
-* Koin
-* Kotlin-Serialization
-* Ktor
-* Coil
-* ExoPlayer
+* Kotlin Coroutine, Flow -> async programming
+* Jetpack Navigation -> single activity
+* Jetpack Room -> database
+* Koin -> dependencies injection
+* Kotlin-Serialization -> json serialize
+* Ktor -> network
+* Coil -> image load
+* ExoPlayer -> play video
+* Mockk, Turbine -> Unit test
 
 ## Demo
 ![Demo gift](asset/demo.gif)
