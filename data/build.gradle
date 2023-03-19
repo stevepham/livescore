@@ -15,8 +15,6 @@ android {
     defaultConfig {
         minSdk Deps.App.minSdk
         targetSdk Deps.App.targetSdk
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -50,6 +48,12 @@ dependencies {
     implementation Deps.Networks.ktorJson
 
     testImplementation Deps.Test.jUnit
+    testImplementation Deps.Test.turbine
     androidTestImplementation Deps.Test.extJUnit
     androidTestImplementation Deps.Test.espresso
+
+    testImplementation Deps.Test.mockk //"io.mockk:mockk-android:1.13.4"
+    testImplementation Deps.Test.mockAgent //"io.mockk:mockk-agent:1.13.4"
+    testImplementation Deps.Test.coroutine
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test"
 }

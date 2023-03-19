@@ -17,7 +17,7 @@ class TeamViewModel(private val teamRepo: ITeamRepo) : ViewModel() {
             .flowOn(Dispatchers.IO)
             .shareIn(
                 viewModelScope,
-                started = SharingStarted.Eagerly,
+                started = SharingStarted.WhileSubscribed(5000),
                 replay = 1
             )
 }

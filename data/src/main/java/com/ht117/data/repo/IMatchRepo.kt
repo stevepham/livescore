@@ -26,10 +26,10 @@ class MatchRepoImpl(private val matchRemote: MatchRemote,
                     private val matchLocal: MatchLocal): IMatchRepo {
 
     override fun getAllMatches() = matchRemote.getAllMatches()
-        .combine(matchLocal.getAllMatches()) { allMatches, favoritesMatchs ->
+        .combine(matchLocal.getAllMatches()) { allMatches, favoritesMatches ->
             if (allMatches is State.Result) {
                 val upComming = allMatches.data.upcoming.map {
-                    it.copy(isFavorite = it in favoritesMatchs)
+                    it.copy(isFavorite = it in favoritesMatches)
                 }
                 State.Result(MatchResponseInfo(allMatches.data.previous, upComming))
             } else {
