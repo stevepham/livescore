@@ -18,25 +18,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.ht117.data.AppErr
 import com.ht117.data.model.Match
 import com.ht117.data.model.UiState
 import com.ht117.livescore.R
-import com.ht117.livescore.ui.compose.component.MatchItem
+import com.ht117.livescore.ui.compose.component.TabContent
 import com.ht117.livescore.ui.screen.match.MatchViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun AllMatchesScreen(
-    controller: NavHostController = rememberNavController(),
-    modifier: Modifier = Modifier,
+fun AllMatchesRoute(
+    controller: NavHostController,
+    modifier: Modifier,
     viewModel: MatchViewModel = koinViewModel()
 ) {
     var tabIndex by remember {
@@ -50,30 +50,22 @@ fun AllMatchesScreen(
 
     when (val state = viewModel.uiState.collectAsState(initial = UiState.Loading).value) {
         is UiState.Loading -> {
-            AllMatchesLoading(modifier, tabIndex, titles) {
-                tabIndex = it
+            TabContent(modifier) {
+                CircularProgressIndicator()
             }
         }
 
         is UiState.Failed -> {
-            AllMatchesFailed(modifier, tabIndex, titles, state.err) {
-                tabIndex = it
+            TabContent(modifier) {
+                Text("Failed")
             }
         }
 
         is UiState.Result -> {
-            AllMatchesResult(
-                controller,
-                modifier,
-                tabIndex,
-                titles,
-                if (tabIndex == 0) state.data.previous else state.data.upcoming
-            ) {
-                tabIndex = it
+            TabContent(modifier) {
+                Text("Content")
             }
         }
-
-        else -> {}
     }
 }
 
@@ -84,7 +76,10 @@ fun AllMatchesLoading(
     titles: List<String>,
     onTabClick: (Int) -> Unit
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         TabRow(selectedTabIndex = tabIndex) {
             titles.forEachIndexed { index, title ->
                 val isSelected = index == tabIndex
@@ -153,15 +148,22 @@ fun AllMatchesFailed(
 
 @Composable
 fun AllMatchesResult(
-    controller: NavHostController = rememberNavController(),
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
     tabIndex: Int,
     titles: List<String>,
     matches: List<Match>,
     onTabClick: (Int) -> Unit
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
-        TabRow(selectedTabIndex = tabIndex, modifier = modifier.padding(8.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        TabRow(
+            selectedTabIndex = tabIndex,
+            modifier = modifier
+                .padding(8.dp)
+                .wrapContentHeight()
+        ) {
             titles.forEachIndexed { index, title ->
                 val isSelected = index == tabIndex
                 Tab(selected = isSelected,
@@ -174,13 +176,13 @@ fun AllMatchesResult(
         }
 
         LazyColumn(
-            modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
             items(matches.size) {
                 val match = matches[it]
-                MatchItem(match = match, modifier = modifier) {
+                MatchItem(match = match) {
                 }
             }
         }

@@ -12,24 +12,30 @@ import com.ht117.data.model.Team
 import com.ht117.data.model.UiState
 import com.ht117.livescore.ui.compose.component.ShowError
 import com.ht117.livescore.ui.compose.component.ShowLoading
-import com.ht117.livescore.ui.compose.component.TeamItem
 import com.ht117.livescore.ui.screen.team.TeamViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun AllTeamScreen(controller: NavHostController = rememberNavController(), modifier: Modifier = Modifier, viewModel: TeamViewModel = koinViewModel()) {
-    when(val state = viewModel.uiState.collectAsState(initial = UiState.Loading).value) {
+fun AllTeamsRoute(
+    controller: NavHostController = rememberNavController(),
+    modifier: Modifier = Modifier,
+    viewModel: TeamViewModel = koinViewModel()
+) {
+    when (val state = viewModel.uiState.collectAsState(initial = UiState.Loading).value) {
         is UiState.Loading -> ShowLoading(modifier)
         is UiState.Failed -> ShowError(modifier, err = state.err)
         is UiState.Result -> {
             AllTeamResult(controller, modifier, state)
         }
-        else -> {}
     }
 }
 
 @Composable
-fun AllTeamResult(controller: NavHostController = rememberNavController(), modifier: Modifier = Modifier, state: UiState.Result<List<Team>>) {
+internal fun AllTeamResult(
+    controller: NavHostController = rememberNavController(),
+    modifier: Modifier = Modifier,
+    state: UiState.Result<List<Team>>
+) {
     LazyColumn(
         modifier
             .fillMaxWidth()

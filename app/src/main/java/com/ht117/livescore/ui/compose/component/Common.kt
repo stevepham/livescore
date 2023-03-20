@@ -1,6 +1,9 @@
 package com.ht117.livescore.ui.compose.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,24 +14,33 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.Card
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.UiComposable
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
+import androidx.navigation.NavHostController
 import com.ht117.data.AppErr
-import com.ht117.data.model.Match
-import com.ht117.data.model.Team
 import com.ht117.livescore.R
-import com.ht117.livescore.ext.formatDate
+import com.ht117.livescore.ui.compose.Destiny
 
 @Composable
 fun ShowLoading(modifier: Modifier = Modifier) {
@@ -52,83 +64,118 @@ fun ShowError(modifier: Modifier = Modifier, err: AppErr) {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MatchItem(match: Match, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Card(
-        onClick = {
-            onClick.invoke()
-        }, modifier = modifier
-            .fillMaxWidth()
-            .height(96.dp)
-            .padding(8.dp)
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = match.home, modifier = modifier
-                    .weight(1F)
-                    .width(110.dp)
-                    .wrapContentHeight()
-                    .padding(start = 8.dp)
-            )
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier.weight(1F)
-            ) {
-                Text(
-                    text = "VS",
-                    modifier = modifier
-                        .padding(top = 8.dp)
-                        .weight(1F)
-                        .wrapContentHeight()
-                )
-                Text(
-                    text = match.date.formatDate(),
-                    textAlign = TextAlign.Center,
-                    modifier = modifier
-                        .weight(1F)
-                        .wrapContentHeight()
-                )
-            }
+fun LiveBottomBar(controller: NavHostController) {
+    var selectedTab by rememberSaveable {
+        mutableStateOf(0)
+    }
 
-            Text(
-                text = match.away,
-                modifier = modifier
-                    .weight(1F)
-                    .width(110.dp)
-                    .wrapContentHeight()
-            )
+    val menus = listOf(
+        Destiny.TeamDestiny,
+        Destiny.MatchDestiny,
+        Destiny.WatchingDestiny
+    )
+    BottomNavigation {
+        menus.forEachIndexed { index, destiny ->
+            val isSelected = index == selectedTab
+            BottomNavigationItem(
+                selected = isSelected,
+                onClick = {
+                    if (index != selectedTab) {
+                        selectedTab = index
+                        controller.navigate(destiny.route)
+                    }
+                },
+                icon = {
+                    Icon(
+                        painter = painterResource(id = destiny.icon),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .width(32.dp)
+                            .height(32.dp)
+                    )
+                })
         }
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TeamItem(team: Team, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Card(
-        onClick = { onClick.invoke() },
+fun TabContent(modifier: Modifier,
+               content: @Composable () -> Unit) {
+    var selectedTab by rememberSaveable {
+        mutableStateOf(0)
+    }
+
+    Column(
         modifier = modifier
-            .fillMaxWidth()
-            .height(64.dp)
-            .padding(8.dp)
+            .fillMaxSize()
+            .padding(horizontal = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            AsyncImage(
-                model = team.logo,
-                contentDescription = "",
-                modifier = modifier
-                    .width(90.dp)
-                    .fillMaxHeight()
-                    .background(Color.Blue)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(top = 8.dp),
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = stringResource(id = R.string.prev_match),
+                modifier = Modifier
+                    .weight(1F)
+                    .wrapContentHeight()
+                    .align(CenterVertically)
+                    .clip(RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp))
+                    .border(
+                        1.dp,
+                        Color.Black,
+                        RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)
+                    )
+                    .background(if (selectedTab == 0) Color.LightGray else Color.White)
+                    .padding(vertical = 8.dp)
+                    .clickable {
+                        if (selectedTab != 0) {
+                            selectedTab = 0
+                        }
+                    },
+                color = if (selectedTab == 0) Color.DarkGray else Color.Black,
+                textAlign = TextAlign.Center
             )
             Text(
-                modifier = modifier
-                    .padding(start = 8.dp)
-                    .fillMaxHeight(),
-                text = team.name,
-                fontSize = 18.sp,
+                text = stringResource(id = R.string.upcoming_match),
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .align(CenterVertically)
+                    .weight(1F)
+                    .clip(RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp))
+                    .border(1.dp, Color.Black, RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp))
+                    .background(if (selectedTab == 1) Color.LightGray else Color.White)
+                    .padding(vertical = 8.dp)
+                    .clickable {
+                        if (selectedTab != 1) {
+                            selectedTab = 1
+                        }
+                    },
+                color = if (selectedTab == 1) Color.Gray else Color.Black,
                 textAlign = TextAlign.Center
             )
         }
+
+        content.invoke()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewTabRow() {
+    TabContent(modifier = Modifier) {
+        CircularProgressIndicator(
+            modifier = Modifier
+                .padding(16.dp)
+                .height(96.dp)
+                .width(96.dp)
+        )
     }
 }
